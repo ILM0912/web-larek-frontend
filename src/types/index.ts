@@ -102,6 +102,7 @@ export interface IEvents {
     trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void;
 }
 
+
 // типы, связанные с представлением (View)
 export interface IView {
     content: HTMLElement;
@@ -112,6 +113,7 @@ export interface IView {
 
 export type BuyButtonState = 'disabled' | 'already' | 'able';
 
+
 // интерфейс карточки товара
 export interface ICard extends IView {
     data: Product;
@@ -119,19 +121,27 @@ export interface ICard extends IView {
     setProduct(data: Product): void;    
 }
 
+
 // отображение элемента корзины
 export interface IBasketItem extends ICard {
     onRemove(): void;
 }
 
+
 // модальное окно
 export interface IModal {
+    isOpen: boolean;
+
     onOpen(): void;
     onClose(): void;
 }
 
+
+// ошибки заполнения форм
 export type FormError = 'address' | 'email' | 'phone'
 
+
+// интерфейс формы 
 export interface IForm {
     isValid: boolean;
     content: HTMLElement;
@@ -141,6 +151,8 @@ export interface IForm {
     getErrors(): FormError[];
 }
 
+
+// модальное окно с формой
 export interface IModalForm extends IModal {
     form: IForm;
 }
