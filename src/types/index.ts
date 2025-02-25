@@ -1,14 +1,18 @@
 // тип ответа от сервера списка элементов Type
-export type ApiListResponse<Type> = {
+export type ApiListResponse<Type> = { // список Type GET /product/
     total: number,
     items: Type[]
 };
 
 
 // тип ошибки
-export type ErrorResponse = {
+export type ErrorResponse = { // Error при запросе
     error: string
 }
+
+
+// возможный ответ от сервера о продукте
+export type ApiProductResponse = ErrorResponse | Product
 
 
 // тип для HTTP методов
@@ -49,7 +53,7 @@ export type ProductsList = {
 }
 
 // возвращаемое значения о заказе
-export type Order = {
+export type Order = { // POST /order
     id: string;
     total: number;
 }
