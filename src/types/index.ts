@@ -101,3 +101,46 @@ export interface IEvents {
     emit<T extends object>(event: string, data?: T): void;
     trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void;
 }
+
+// типы, связанные с представлением (View)
+export interface IView {
+    content: HTMLElement;
+
+    constructor(content: HTMLElement): void;
+    render(data?: object): HTMLElement;
+}
+
+export type BuyButtonState = 'disabled' | 'already' | 'able';
+
+// интерфейс карточки товара
+export interface ICard extends IView {
+    data: Product;
+
+    setProduct(data: Product): void;    
+}
+
+// отображение элемента корзины
+export interface IBasketItem extends ICard {
+    onRemove(): void;
+}
+
+// модальное окно
+export interface IModal {
+    onOpen(): void;
+    onClose(): void;
+}
+
+export type FormError = 'address' | 'email' | 'phone'
+
+export interface IForm {
+    isValid: boolean;
+    content: HTMLElement;
+    errors: FormError[];
+
+    checkValidity(): boolean;
+    getErrors(): FormError[];
+}
+
+export interface IModalForm extends IModal {
+    form: IForm;
+}
