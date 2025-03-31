@@ -34,7 +34,7 @@ export type Product = {
     description: string,
     image: string,
     category: Category,
-    price: number
+    price: number | null
 }
 
 
