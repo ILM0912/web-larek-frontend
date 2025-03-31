@@ -108,18 +108,12 @@ export interface IEvents {
 
 
 // типы, связанные с представлением (View)
-export interface IView {
-    content: HTMLElement;
-
-    constructor(content: HTMLElement): void;
-    render(data?: object): HTMLElement;
-}
 
 export type BuyButtonState = 'disabled' | 'already' | 'able';
 
 
 // интерфейс карточки товара
-export interface ICard extends IView {
+export interface ICard {
     data: Product;
 
     setProduct(data: Product): void;    
