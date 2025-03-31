@@ -2,6 +2,10 @@ import { Category, ICard, Product } from "../types";
 import { ensureElement } from "../utils/utils";
 import { Component } from "./base/Component";
 
+interface ICardActions {
+    onClick : (event: MouseEvent) => void;
+}
+
 export class CatalogElement extends Component<ICard> {
     protected el_category: HTMLElement;
     protected el_title: HTMLElement;
@@ -15,13 +19,15 @@ export class CatalogElement extends Component<ICard> {
         "другое": "other",
     }
 
-    constructor(protected blockName: string, container: HTMLElement) {
+    constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
         super(container);
 
         this.el_category = ensureElement(`.${blockName}__category`, this.container);
         this.el_image = ensureElement<HTMLImageElement>(`.${blockName}__image`, this.container);
         this.el_title = ensureElement(`.${blockName}__title`, this.container);
         this.el_price = ensureElement(`.${blockName}__price`, this.container);
+
+        container.addEventListener('click', actions.onClick);
     }
 
     set data(product: Product) {

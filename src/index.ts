@@ -41,8 +41,9 @@ api.getProductsList()
 events.on("catalog:changed", () => {
     const products = appData.getCatalog().getItems().items
     page.catalog = products.map(product => {
-        console.log(product)
-        const card = new CatalogElement("card", cloneTemplate(CardCatalogTemplate));
+        const card = new CatalogElement("card", cloneTemplate(CardCatalogTemplate), {
+            onClick: () => events.emit('card:select', product)
+        });
         return card.render({
             data: product,
         });
