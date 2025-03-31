@@ -8,7 +8,7 @@ import { PaymentType, Product, ProductsList } from './types';
 import { API_URL, CDN_URL } from './utils/constants';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { Page } from './components/Page';
-import { CatalogElement } from './components/Card';
+import { CatalogElement, PreviewElement } from './components/Card';
 
 const events = new EventEmitter();
 const api = new LarekAPI(CDN_URL, API_URL);
@@ -22,6 +22,8 @@ const modal = new Modal(modalContainer, events);
 
 //шаблоны
 const CardCatalogTemplate = ensureElement<HTMLTemplateElement>('#card-catalog');
+const CardPreviewTemplate = ensureElement<HTMLTemplateElement>('#card-preview');
+
 
 
 events.onAll(({ eventName, data }) => {
@@ -42,10 +44,56 @@ events.on("catalog:changed", () => {
     const products = appData.getCatalog().getItems().items
     page.catalog = products.map(product => {
         const card = new CatalogElement("card", cloneTemplate(CardCatalogTemplate), {
-            onClick: () => events.emit('card:select', product)
+            openPreview: () => events.emit('card:select', product)
         });
         return card.render({
             data: product,
         });
     });
+});
+
+events.on("card:select", (product: Product) => {
+    const id = product.id;
+
+    if (product) {
+        api.getProductItem(id)
+            .then(result => product = result)
+            .catch(err => {
+                console.error(err);
+            });
+        show(product, appData.isInBasket(product));
+    } else {
+        modal.close();
+    }
+
+    function show(product: Product, isInBasket: boolean) {
+        const card = new PreviewElement("card", cloneTemplate(CardPreviewTemplate), isInBasket, {
+            changeBasket: () => {
+                if (!isInBasket) {
+                    appData.addToBasket(product);
+                } else {
+                    appData.removeFromBasket(product);
+                }
+                events.emit('basket:change', product),
+                modal.close();
+            }
+        });
+        modal.render({ 
+            content: card.render({ 
+                data: product 
+            }) 
+        });
+    }
+});
+
+events.on('basket:change', (product: Product) => {
+    
+});
+
+events.on('modal:open', () => {
+    page.locked = true;
+});
+
+events.on('modal:close', () => {
+    page.locked = false;
 });

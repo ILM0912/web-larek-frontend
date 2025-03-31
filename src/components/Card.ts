@@ -3,7 +3,8 @@ import { ensureElement } from "../utils/utils";
 import { Component } from "./base/Component";
 
 interface ICardActions {
-    onClick : (event: MouseEvent) => void;
+    openPreview?: (event: MouseEvent) => void;
+    changeBasket?: (event: MouseEvent) => void;
 }
 
 export class CatalogElement extends Component<ICard> {
@@ -27,7 +28,9 @@ export class CatalogElement extends Component<ICard> {
         this.el_title = ensureElement(`.${blockName}__title`, this.container);
         this.el_price = ensureElement(`.${blockName}__price`, this.container);
 
-        container.addEventListener('click', actions.onClick);
+        if (actions && actions.openPreview) {
+            container.addEventListener('click', actions.openPreview);
+        }
     }
 
     set data(product: Product) {
@@ -37,7 +40,6 @@ export class CatalogElement extends Component<ICard> {
         this.setImage(this.el_image, product.image, product.title);
 
         this.el_category.classList.add(this.getCategoryClass(product.category));
-
     }
 
     getPrice(price: number | null): String {
@@ -46,5 +48,29 @@ export class CatalogElement extends Component<ICard> {
 
     getCategoryClass(category: Category) {
         return `${this.blockName}__category_${this.colors[category]}`
+    }
+}
+
+export class PreviewElement extends CatalogElement {
+    protected el_text: HTMLElement;
+    protected el_button: HTMLButtonElement;
+
+    constructor(protected blockName: string, container: HTMLElement, isInBasket: boolean,  actions?: ICardActions) {
+        super(blockName, container);
+
+        this.el_text = ensureElement(`.${blockName}__text`, this.container);
+        this.el_button = ensureElement<HTMLButtonElement>(`.${blockName}__button`, this.container);
+        this.el_button.addEventListener('click', actions.changeBasket);
+        if (!isInBasket) {
+            this.setText(this.el_button, "В корзину");
+        } else {
+            this.setText(this.el_button, "Удалить");
+        }
+    }
+
+    set data(product: Product) {
+        super.data = product;
+
+        this.setText(this.el_text, product.description);
     }
 }
