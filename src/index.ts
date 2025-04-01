@@ -10,7 +10,7 @@ import { cloneTemplate, createElement, ensureElement } from './utils/utils';
 import { Page } from './components/Page';
 import { BasketItem, CatalogElement, PreviewElement } from './components/Card';
 import { BasketView } from './components/BasketView';
-import { Order } from './components/Order';
+import { Order, Success } from './components/Order';
 
 const events = new EventEmitter();
 const api = new LarekAPI(CDN_URL, API_URL);
@@ -25,6 +25,7 @@ const BasketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const BasketItemTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
 const OrderTemplate = ensureElement<HTMLTemplateElement>('#order');
 const ContactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
+const SuccessTemplate = ensureElement<HTMLTemplateElement>('#success');
 
 const modalContainer = ensureElement<HTMLElement>('#modal-container');
 const basketContainer = new BasketView(cloneTemplate(BasketTemplate), events);
@@ -165,6 +166,8 @@ events.on('contacts:submit', () => {
     console.log(appData.getOrder());
     api.postOrder(appData.getOrder())
         .then(result => {
+            appData.clearBasket();
+            events.emit('auction:changed');
             events.emit('order:success', result)
         })
         .catch(err => {
@@ -173,7 +176,16 @@ events.on('contacts:submit', () => {
 });
 
 events.on('order:success', (order: OrderResult) => {
-    console.log(order);
+    const success = new Success(cloneTemplate(SuccessTemplate), {
+        exit: () => {
+            modal.onClose();
+        }
+    });
+    modal.render({
+        content: success.render({
+            total: order.total
+        })
+    });
 });
 
 events.on('modal:open', () => {

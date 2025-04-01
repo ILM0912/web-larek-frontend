@@ -1,5 +1,6 @@
-import { IEvents, PaymentType, UserInfo } from "../types";
-import { ensureElement } from "../utils/utils";
+import { IEvents, OrderResult, PaymentType, UserInfo } from "../types";
+import { ensureElement, formatNumber } from "../utils/utils";
+import { Component } from "./base/Component";
 import { Form } from "./base/Form";
 
 export type FormType = 'order' | 'contacts';
@@ -54,5 +55,29 @@ export class Order extends Form<UserInfo>{
         } else {
             this.el_formErrors.style.display = 'none';
         }
+    }
+}
+
+interface ISuccessActions {
+    exit: () => void;
+}
+
+export class Success extends Component<OrderResult> {
+    protected el_close: HTMLButtonElement;
+    protected el_description: HTMLElement;
+
+    constructor(container: HTMLElement, actions: ISuccessActions) {
+        super(container);
+        
+        this.el_description = ensureElement('.order-success__description', this.container);
+        this.el_close = ensureElement<HTMLButtonElement>('.order-success__close', this.container);
+
+        if (actions?.exit) {
+            this.el_close.addEventListener('click', actions.exit);
+        }
+    }
+
+    set total(price: number) {
+        this.setText(this.el_description, `Списано ${formatNumber(price)} синапсов`)
     }
 }

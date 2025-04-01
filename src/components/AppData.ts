@@ -159,4 +159,12 @@ export class AppData extends Model<IAppData> {
     getOrder(): OrderInfo {
         return this.order;
     }
+
+    
+    clearBasket() {
+        this.setBasket({
+            total: 0,
+            items: []
+        });
+    }
 }
