@@ -63,7 +63,7 @@ events.on("card:select", (product: Product) => {
             });
         show(product, appData.isInBasket(product));
     } else {
-        modal.close();
+        modal.onClose();
     }
 
     function show(product: Product, isInBasket: boolean) {
@@ -75,7 +75,7 @@ events.on("card:select", (product: Product) => {
                     appData.removeFromBasket(product);
                 }
                 events.emit('basket:change', product),
-                modal.close();
+                modal.onClose();
             }
         });
         modal.render({ 

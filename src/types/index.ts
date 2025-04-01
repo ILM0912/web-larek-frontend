@@ -128,8 +128,6 @@ export interface IBasketItem extends ICard {
 
 // модальное окно
 export interface IModal {
-    isOpen: boolean;
-
     onOpen(): void;
     onClose(): void;
 }

@@ -1,12 +1,12 @@
 import {Component} from "./base/Component";
 import {ensureElement} from "../utils/utils";
-import { IEvents } from "../types";
+import { IEvents, IModal } from "../types";
 
 interface IModalData {
     content: HTMLElement;
 }
 
-export class Modal extends Component<IModalData> {
+export class Modal extends Component<IModalData> implements IModal {
     protected _closeButton: HTMLButtonElement;
     protected _content: HTMLElement;
 
@@ -16,13 +16,13 @@ export class Modal extends Component<IModalData> {
         this._closeButton = ensureElement<HTMLButtonElement>('.modal__close', container);
         this._content = ensureElement<HTMLElement>('.modal__content', container);
 
-        this._closeButton.addEventListener('click', this.close.bind(this));
-        this.container.addEventListener('click', this.close.bind(this));
+        this._closeButton.addEventListener('click', this.onClose.bind(this));
+        this.container.addEventListener('click', this.onClose.bind(this));
         this._content.addEventListener('click', (event) => event.stopPropagation());
         //я устал закрывать модалки пусть esc еще будет
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
-                this.close();
+                this.onClose();
             }
         });
     }
@@ -31,12 +31,12 @@ export class Modal extends Component<IModalData> {
         this._content.replaceChildren(value);
     }
 
-    open() {
+    onOpen() {
         this.container.classList.add('modal_active');
         this.events.emit('modal:open');
     }
 
-    close() {
+    onClose() {
         this.container.classList.remove('modal_active');
         this.content = null;
         this.events.emit('modal:close');
@@ -44,7 +44,7 @@ export class Modal extends Component<IModalData> {
 
     render(data: IModalData): HTMLElement {
         super.render(data);
-        this.open();
+        this.onOpen();
         return this.container;
     }
 }
