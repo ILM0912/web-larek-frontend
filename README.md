@@ -112,7 +112,7 @@ yarn build
 - **Order**  
   Тип данных, возвращаемый сервером после оформления заказа.
   ```typescript
-  export type Order = { // POST /order
+  export type OrderResult = { // POST /order
       id: string;
       total: number;
   };
@@ -152,20 +152,6 @@ yarn build
   }
   ```
   *Назначение:* добавление и удаление товаров, расчёт общей суммы корзины.
-
-- **IUser**  
-  Интерфейс для работы с данными пользователя.
-  ```typescript
-  export interface IUser {
-      info: UserInfo;
-  
-      setPaymentType(payment: PaymentType): void;
-      setAddress(address: string): void;
-      setEmail(email: string): void;
-      setPhone(phone: string): void;
-  }
-  ```
-  *Назначение:* управление информацией о пользователе (тип оплаты, адрес, email, телефон).
 
 ---
 
@@ -211,35 +197,11 @@ yarn build
   ```
   *Назначение:* управление состоянием модального окна (открытие/закрытие).
 
-- **IForm**  
-  Интерфейс для форм ввода данных.
-  ```typescript
-  export interface IForm {
-      isValid: boolean;
-      content: HTMLElement;
-      errors: FormError[];
-  
-      checkValidity(): boolean;
-      getErrors(): FormError[];
-  }
-  ```
-  *Назначение:* проверка валидности формы и получение ошибок.
-
 - **FormError**  
   Перечисление ошибок валидации формы.
   ```typescript
-  export type FormError = 'address' | 'email' | 'phone';
+  export type FormError = 'address' | 'email' | 'phone' | 'empty';
   ```
-
-- **IModalForm**  
-  Интерфейс модального окна с формой.
-  ```typescript
-  export interface IModalForm extends IModal {
-      form: IForm;
-  }
-  ```
-  *Назначение:* объединяет функциональность модального окна и формы для ввода данных.
-
 ---
 
 ## Presenter
