@@ -17,4 +17,8 @@
     @include mixins.button(white, $primaryLight, $primaryLight);
     border: $hoverBorder;
   }
+
+  &.button-delete {
+    @include mixins.button($primary, $delete, $delete-hover);
+  }
 }

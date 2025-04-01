@@ -62,8 +62,10 @@ export class PreviewElement extends CatalogElement {
         this.el_button = ensureElement<HTMLButtonElement>(`.${blockName}__button`, this.container);
         this.el_button.addEventListener('click', actions.changeBasket);
         if (!isInBasket) {
+            this.el_button.classList.remove('button-delete');
             this.setText(this.el_button, "В корзину");
         } else {
+            this.el_button.classList.add('button-delete');
             this.setText(this.el_button, "Удалить");
         }
     }
