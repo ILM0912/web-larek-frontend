@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 
-import { AppData } from './components/AppData';
+import { AppData, Basket } from './components/AppData';
 import { EventEmitter } from './components/base/events';
 import { LarekAPI } from './components/LarekApi';
 import { Modal } from './components/Modal';
@@ -67,14 +67,13 @@ events.on("card:select", (product: Product) => {
     }
 
     function show(product: Product, isInBasket: boolean) {
-        const card = new PreviewElement("card", cloneTemplate(CardPreviewTemplate), isInBasket, {
+        const card = new PreviewElement("card", cloneTemplate(CardPreviewTemplate), product, isInBasket, {
             changeBasket: () => {
                 if (!isInBasket) {
                     appData.addToBasket(product);
                 } else {
                     appData.removeFromBasket(product);
                 }
-                events.emit('basket:change', product),
                 modal.onClose();
             }
         });
@@ -86,8 +85,12 @@ events.on("card:select", (product: Product) => {
     }
 });
 
-events.on('basket:change', (product: Product) => {
-    
+events.on('basket:changed', (basket: Basket) => {
+    page.counter = basket.list.items.length;
+});
+
+events.on('basket:open', () => {
+    console.log(appData.getBasket());
 });
 
 events.on('modal:open', () => {

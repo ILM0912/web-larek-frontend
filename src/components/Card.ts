@@ -55,12 +55,15 @@ export class PreviewElement extends CatalogElement {
     protected el_text: HTMLElement;
     protected el_button: HTMLButtonElement;
 
-    constructor(protected blockName: string, container: HTMLElement, isInBasket: boolean,  actions?: ICardActions) {
+    constructor(protected blockName: string, container: HTMLElement, product: Product, isInBasket: boolean,  actions?: ICardActions) {
         super(blockName, container);
 
         this.el_text = ensureElement(`.${blockName}__text`, this.container);
         this.el_button = ensureElement<HTMLButtonElement>(`.${blockName}__button`, this.container);
         this.el_button.addEventListener('click', actions.changeBasket);
+
+        this.setDisabled(this.el_button, !product.price);
+
         if (!isInBasket) {
             this.el_button.classList.remove('button-delete');
             this.setText(this.el_button, "В корзину");

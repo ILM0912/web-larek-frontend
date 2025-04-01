@@ -73,7 +73,7 @@ export class AppData extends Model<IAppData> {
 
     setBasket(elements: ProductsList) {
         this.basket.setItems(elements);
-        this.emitChanges('basket:changed', { basket: this.basket });
+        this.emitChanges('basket:changed', this.basket);
     }
 
     getBasket(): Basket {
@@ -85,16 +85,16 @@ export class AppData extends Model<IAppData> {
     }
 
     addToBasket(product: Product) {
-        if (!this.isInBasket(product)) {
+        if (!this.isInBasket(product) && product.price) {
             this.basket.add(product);
-            this.emitChanges('basket:changed', { basket: this.basket });
+            this.emitChanges('basket:changed', this.basket);
         }
     }
 
     removeFromBasket(product: Product) {
         if (this.isInBasket(product)) {
             this.basket.remove(product);
-            this.emitChanges('basket:changed', { basket: this.basket });
+            this.emitChanges('basket:changed', this.basket);
         }
     }
 }
