@@ -109,6 +109,10 @@ export interface IEvents {
 
 // типы, связанные с представлением (View)
 
+export interface IView {
+    render(data?: object): HTMLElement;
+}
+
 export type BuyButtonState = 'disabled' | 'already' | 'able';
 
 
@@ -117,12 +121,6 @@ export interface ICard {
     data: Product;
 
     setProduct(data: Product): void;    
-}
-
-
-// отображение элемента корзины
-export interface IBasketItem extends ICard {
-    onRemove(): void;
 }
 
 

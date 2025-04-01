@@ -177,9 +177,6 @@ yarn build
   Базовый интерфейс для всех отображаемых компонентов.
   ```typescript
   export interface IView {
-      content: HTMLElement;
-  
-      constructor(content: HTMLElement): void;
       render(data?: object): HTMLElement;
   }
   ```
@@ -194,22 +191,13 @@ yarn build
 - **ICard**  
   Интерфейс карточки товара, реализующий базовый интерфейс IView.
   ```typescript
-  export interface ICard extends IView {
+  export interface ICard {
       data: Product;
   
       setProduct(data: Product): void;
   }
   ```
   *Назначение:* отображение информации о товаре, возможность установки данных о продукте.
-
-- **IBasketItem**  
-  Интерфейс для отображения элемента корзины, расширяет функциональность карточки.
-  ```typescript
-  export interface IBasketItem extends ICard {
-      onRemove(): void;
-  }
-  ```
-  *Назначение:* обеспечивает механизм удаления товара из корзины.
 
 - **IModal**  
   Интерфейс модального окна.
