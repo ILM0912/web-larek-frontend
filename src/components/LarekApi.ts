@@ -1,10 +1,10 @@
 import { Api } from './base/api';
-import { ApiListResponse, Order, OrderInfo, Product, ProductsList } from '../types';
+import { ApiListResponse, OrderResult, OrderInfo, Product, ProductsList } from '../types';
 
 export interface ILarekAPI {
     getProductsList: () => Promise<ProductsList>;
     getProductItem: (id: string) => Promise<Product>;
-    postOrder: (order: OrderInfo) => Promise<Order>;
+    postOrder: (order: OrderInfo) => Promise<OrderResult>;
 }
 
 export class LarekAPI extends Api implements ILarekAPI {
@@ -34,12 +34,12 @@ export class LarekAPI extends Api implements ILarekAPI {
         );
     }
 
-    postOrder(order: OrderInfo): Promise<Order> {
+    postOrder(order: OrderInfo): Promise<OrderResult> {
         return this.post('/order', {
             ...order,
             items: order.items.map((product) => product.id),
             payment: this.translatePayment(order.payment)
-        }).then((data: Order) => data);
+        }).then((data: OrderResult) => data);
     }
 
     private translatePayment(payment: string): string {
