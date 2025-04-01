@@ -100,9 +100,10 @@ export class BasketItem extends Card {
     protected el_index: HTMLElement;
     protected el_delete: HTMLButtonElement;
 
-    constructor(blockName: string, container: HTMLElement, actions: IBasketActions) {
+    constructor(blockName: string, container: HTMLElement, index: number, actions: IBasketActions) {
         super(blockName, container);
         this.el_index = ensureElement(".basket__item-index", this.container);
+        this.setText(this.el_index, index);
         this.el_delete = ensureElement<HTMLButtonElement>(".basket__item-delete", this.container);
         this.el_delete.addEventListener('click', actions.onRemove);
     }

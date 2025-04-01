@@ -96,13 +96,15 @@ events.on("card:select", (product: Product) => {
 
 events.on('basket:changed', (basket: Basket) => {
     page.counter = basket.list.items.length;
-
+    let index = 1;
+    
     basketContainer.items = appData.getBasket().list.items.map(product => {
-        const card = new BasketItem('card', cloneTemplate(BasketItemTemplate), {
+        const card = new BasketItem('card', cloneTemplate(BasketItemTemplate), index, {
             onRemove: () => {
                 appData.removeFromBasket(product);
             }
         })
+        index += 1;
         return card.render({data: product});
     });
 
