@@ -53,7 +53,7 @@ export type ProductsList = {
 }
 
 // возвращаемое значения о заказе
-export type Order = { // POST /order
+export type OrderResult = { // POST /order
     id: string;
     total: number;
 }
@@ -76,17 +76,6 @@ export interface IBasket extends ICatalog {
     calculateSum(): number;
     remove(product: Product): void;
     add(product: Product): void;
-}
-
-
-// интерфейс для взаимодействия с данными пользователя
-export interface IUser {
-    info: UserInfo;
-
-    setPaymentType(payment: PaymentType): void;
-    setAddress(address: string): void;
-    setEmail(email: string): void;
-    setPhone(phone: string): void;
 }
 
 
@@ -132,21 +121,4 @@ export interface IModal {
 
 
 // ошибки заполнения форм
-export type FormError = 'address' | 'email' | 'phone'
-
-
-// интерфейс формы 
-export interface IForm {
-    isValid: boolean;
-    content: HTMLElement;
-    errors: FormError[];
-
-    checkValidity(): boolean;
-    getErrors(): FormError[];
-}
-
-
-// модальное окно с формой
-export interface IModalForm extends IModal {
-    form: IForm;
-}
+export type FormError = 'address' | 'email' | 'phone' | 'empty'

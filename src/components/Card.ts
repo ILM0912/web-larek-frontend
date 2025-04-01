@@ -1,5 +1,5 @@
 import { BuyButtonState, Category, ICard, Product } from "../types";
-import { ensureElement } from "../utils/utils";
+import { ensureElement, formatNumber } from "../utils/utils";
 import { Component } from "./base/Component";
 
 interface ICardActions {
@@ -23,7 +23,7 @@ export class Card extends Component<ICard> {
     }
 
     getPrice(price: number | null): String {
-        return (price === null) ? 'Бесценно' : price + ' синапсов'
+        return (price === null) ? 'Бесценно' : formatNumber(price) + ' синапсов'
     }
 }
 
@@ -102,7 +102,6 @@ export class BasketItem extends Card {
 
     constructor(blockName: string, container: HTMLElement, actions: IBasketActions) {
         super(blockName, container);
-        console.log(container);
         this.el_index = ensureElement(".basket__item-index", this.container);
         this.el_delete = ensureElement<HTMLButtonElement>(".basket__item-delete", this.container);
         this.el_delete.addEventListener('click', actions.onRemove);
